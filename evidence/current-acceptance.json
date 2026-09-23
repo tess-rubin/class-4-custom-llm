@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "fixed_sources_unchanged": true,
+  "experiments": [
+    {
+      "run": "llm_runs/20260923T002935_286109Z",
+      "notebook": "custom_llm.ipynb",
+      "executed_code_cells": 12,
+      "completed_steps": 3000,
+      "suite_sha256": "1d7c503f34d88260d0ac897bc36b8ba621cccc1950aef47e7121e69b2c1c9e1d",
+      "model_hashes": {
+        "untrained": "73fcac5a3daaed81be800a450cc50c3cd932db3b3b1cb79b27401124eeb1f16b",
+        "final": "bf49f05b14d5417840f3b551aa61e28c0e521e6d5557f146f3961ffc1afbe84e"
+      },
+      "all_case_results": {
+        "untrained": {
+          "correct": 9,
+          "total": 48,
+          "scorable": 24,
+          "success_rate_all_cases": 0.1875,
+          "accuracy_scorable_cases": 0.375,
+          "coverage": 0.5
+        },
+        "final": {
+          "correct": 20,
+          "total": 48,
+          "scorable": 24,
+          "success_rate_all_cases": 0.4166666666666667,
+          "accuracy_scorable_cases": 0.8333333333333334,
+          "coverage": 0.5
+        }
+      },
+      "zip": "llm_runs/20260923T002935_286109Z.zip",
+      "saved_model_rerun_verified": true
+    },
+    {
+      "run": "llm_runs/20260923T012054_755149Z",
+      "notebook": "custom_llm_expanded.ipynb",
+      "executed_code_cells": 12,
+      "completed_steps": 3000,
+      "suite_sha256": "1d7c503f34d88260d0ac897bc36b8ba621cccc1950aef47e7121e69b2c1c9e1d",
+      "model_hashes": {
+        "untrained": "b129b8996377725ff25247bc48472b85cb21ef11d5157c66efef23189e2a20ab",
+        "final": "cb6dde986cf6f15df7a8bb585a984e1fd9ddec03e0a2a63f87ff89cfb82d6250"
+      },
+      "all_case_results": {
+        "untrained": {
+          "correct": 7,
+          "total": 48,
+          "scorable": 26,
+          "success_rate_all_cases": 0.14583333333333334,
+          "accuracy_scorable_cases": 0.2692307692307692,
+          "coverage": 0.5416666666666666
+        },
+        "final": {
+          "correct": 24,
+          "total": 48,
+          "scorable": 26,
+          "success_rate_all_cases": 0.5,
+          "accuracy_scorable_cases": 0.9230769230769231,
+          "coverage": 0.5416666666666666
+        }
+      },
+      "zip": "llm_runs/20260923T012054_755149Z.zip",
+      "saved_model_rerun_verified": true
+    }
+  ],
+  "limitation": "Exact-prefix separation is checked; semantic leakage and the student's explanations require human review."
+}

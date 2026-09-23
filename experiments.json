@@ -1,0 +1,21 @@
+{
+  "setup": {
+    "notebook": "evidence/setup/custom_llm_10_steps.ipynb",
+    "run": "llm_runs/20260923T002913_407572Z",
+    "role": "10-step setup only"
+  },
+  "starter": {
+    "notebook": "custom_llm.ipynb",
+    "source_notebook": "notebooks/starter.ipynb",
+    "run": "llm_runs/20260923T002935_286109Z",
+    "corpus_folder": "corpus/starter"
+  },
+  "expanded": {
+    "notebook": "custom_llm_expanded.ipynb",
+    "source_notebook": "notebooks/expanded.ipynb",
+    "corpus_folder": "corpus/expanded",
+    "status": "completed",
+    "run": "llm_runs/20260923T012054_755149Z"
+  },
+  "previous_published_revision": "a52ef411ee9f80ce50deb658039cdf7b645421a4"
+}

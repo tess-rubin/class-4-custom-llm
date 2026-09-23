@@ -1,0 +1,15 @@
+{
+  "relative_report_links": "PASS",
+  "recording_payload_integrity": "PASS",
+  "local_player_visual_check": "Not performed: browser URL policy rejected file:// access; no workaround attempted.",
+  "files": {
+    "README.md": "2bfd41748a95b73c94965e751bb70ec29c88fff8bd8b97febd18ab0ac4904c95",
+    "custom_llm.ipynb": "469255b5af3f78b7a2eee6b519fbb9527c8178ce1aada4e7826f78acc9f5d428",
+    "custom_llm_expanded.ipynb": "c828f1e7a0b2e6fcf775f1ab872af65d88f0345915c595c6634a6b7e9e5093dd",
+    "evidence/current-chat/terminal.txt": "530447836bd0f13b08e4e43a85e53610769a6c4ed6a9aee31b02940158807cf7",
+    "evidence/current-chat/terminal.cast": "5d3bda91ea8ddd3ac6b971e5cfd2efd0ab04437a374a2963a02b01635480bbad",
+    "evidence/current-chat/playback.html": "a1193a26514709003666ca69f86f7f0baa9df9037ce6ad1facf83174159ce490",
+    "evidence/current-chat/transcript.json": "6cb5866c1154a2d90c193316917e248e6628100fcfcf389e183368636969bdce",
+    "evidence/current-chat/verification.json": "a02c60bedc423726da65d1eae4249cbb9c08f3767ce81d178263ee0d4fea1eb6"
+  }
+}

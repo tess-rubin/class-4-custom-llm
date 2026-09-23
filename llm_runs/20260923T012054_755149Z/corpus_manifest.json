@@ -1,0 +1,33 @@
+{
+  "files": [
+    {
+      "file": "negation.txt",
+      "bytes": 7959,
+      "sha256": "f6ebc127a19c2328030a5c67ec8d126f084a00600eb795453af727f9f7c11506",
+      "warnings": [],
+      "characters": 7959,
+      "passages": 120,
+      "unique_passages": 120,
+      "preview": "The teacher did not cancel the lesson, so the class met at school as planned.\nJules was not at the office because the work was at the market today.\nThe patient had no appointment in the morning; the visit was in the evening.\nRin went to the kitchen instead of the garden.\nThe delivery never reached t"
+    },
+    {
+      "file": "opposites.txt",
+      "bytes": 7609,
+      "sha256": "32ff0d194315c638e645701d36f91d7c81721f5bf27bd996d43f0df1097993d2",
+      "warnings": [],
+      "characters": 7609,
+      "passages": 120,
+      "unique_passages": 120,
+      "preview": "The cook set hot soup beside cold juice to compare their temperatures.\nJules held a cold towel after working near the hot soup.\nOur kitchen has cold fruit with a hot meal.\nThe hot plate needed time to turn cold before the student could carry it.\nRin found the soup too hot and added cold water.\nA col"
+    }
+  ],
+  "ignored": [],
+  "external_passages": 240,
+  "mode": "classroom",
+  "base_passages": 6200,
+  "unique_passages": 4832,
+  "new_unique_passages": 240,
+  "duplicates_removed": 1608,
+  "max_passage_tokens": 47,
+  "split_unit": "deduplicated passage, not source file"
+}

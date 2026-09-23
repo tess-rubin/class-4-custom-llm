@@ -1,110 +1,432 @@
-"""Build evidence tables from saved artifacts; never train or modify scoring."""
+"""Build the current report from saved artifacts, without training or inference."""
+import csv
+import hashlib
+import io
+import json
 from pathlib import Path
-import hashlib,json,math,csv,sys
-ROOT=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT))
-from run_evals import load_suite,matching_cases,suite_hash,word_tokens
-from test_corpus import load_folder
 
-def read(p):return json.loads(p.read_text())
-def write(p,x):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(x,indent=2)+'\n')
-def pct(x):return 'n/a' if x is None else f'{100*x:.2f}%'
-def textcell(s):return s.replace('|','\\|').replace('\n',' ') or '**[empty response]**'
-runs={k:ROOT/read(ROOT/f'evidence/{k}/execution.json')['run_dir'] for k in ['setup','starter','expanded']}
-data={k:{n:read(r/f'{n}.json') for n in ['config','training_summary','history','inspection','tokenization','corpus_manifest','split','vocabulary_report','temperature_comparison']} for k,r in runs.items()}
-extra,manifest=load_folder(ROOT/'corpus/expanded'); extra=set(extra); suite=load_suite()
-plan=read(ROOT/'evidence/provenance/pretraining_plan.json')
-source_checks={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==sha for p,sha in plan['source_sha256'].items()}
-assert all(source_checks.values())
-audit={'preserved_sources':source_checks,'canonical_suite_sha256':suite_hash(suite),'suite_file_sha256':plan['source_sha256']['evals/language_evals.json'],'extension_unique_passages':len(extra),'runs':{},'notes':['Exact normalized matching is not a semantic leakage detector.','All 240 passages were composed before the suite stories were read; semantic review found no copied stories, answer lists, or close story paraphrases. Generic concepts intentionally overlap.']}
-metrics=[];summaries={};results={}
-for label in ['starter','expanded']:
- r=runs[label]; d=data[label]; split=d['split'];vocab=set(d['tokenization']['vocabulary'])
- assert d['training_summary']['completed_steps']==3000 and not d['training_summary']['interrupted']
- assert d['config']['seed']==42 and d['config']['device']=='cpu'
- assert not set(split['train'])&set(split['validation'])
- assert all(not matching_cases(p,suite) for p in split['train']+split['validation'])
- panels={p:{'documents':len(split[p]),'extension_documents':len(set(split[p])&extra),'nonpadding_targets':sum(len(word_tokens(t))+1 for t in split[p]),'sha256':hashlib.sha256(json.dumps(split[p]).encode()).hexdigest()} for p in ['evaluation_train','evaluation_validation']}
- assert all(p['documents']<=20 for p in panels.values())
- leakage=[{'source':f['file'],'matches':matching_cases((ROOT/'corpus/expanded'/f['file']).read_text(),suite)} for f in manifest['files']] if label=='expanded' else []
- assert all(not row['matches'] for row in leakage)
- eval_unknown={}
- for part in ['prompt','choices']:
-  toks=[t for c in suite['cases'] for t in word_tokens(c['prompt'] if part=='prompt' else ' '.join(c['choices']))]
-  eval_unknown[part]={'unknown_tokens':sum(t not in vocab for t in toks),'total_tokens':len(toks),'unknown_rate':sum(t not in vocab for t in toks)/len(toks)}
- for stage in ['untrained','final']:
-  key=(label,stage);rows=read(r/f'language_evals/{stage}/eval_results.json'); summary=read(r/f'language_evals/{stage}/eval_summary.json')
-  assert len(rows)==48 and {x['id'] for x in rows}=={x['id'] for x in suite['cases']}
-  assert summary['suite_sha256']==suite_hash(suite)
-  summaries[key]=summary;results[key]=rows
-  metrics.append({'experiment':label,'stage':stage,**summary['overall'],'eval_prompt_unknown_rate':eval_unknown['prompt']['unknown_rate'],'eval_choice_unknown_rate':eval_unknown['choices']['unknown_rate']})
- rerun=read(ROOT/f'evidence/{label}/saved-model-eval/eval_results.json')
- assert rerun==results[(label,'final')]
- nb=read(ROOT/f'notebooks/{label}.executed.ipynb')
- codes=[c for c in nb['cells'] if c['cell_type']=='code']
- assert all(c['execution_count'] is not None for c in codes)
- assert not [o for c in codes for o in c['outputs'] if o['output_type']=='error']
- original=read(ROOT/'custom_llm.ipynb');origcodes=[c for c in original['cells'] if c['cell_type']=='code']
- assert all(c['source']==o['source'] for c,o in zip(codes[1:],origcodes[1:]))
- audit['runs'][label]={'run_dir':str(r.relative_to(ROOT)),'two_48_case_sets_complete':True,'saved_eval_rerun_exact_match':True,'source_code_cells_unchanged_except_corpus_folder':True,'no_eval_prefix_in_any_split':True,'split_disjoint':True,'source_file_leakage_checks':leakage,'panels':panels,'eval_token_unknown_rates':eval_unknown,'extension_split_counts':{p:len(set(split[p])&extra) for p in ['train','validation']},'notebook_code_cells_executed':len(codes),'errors':0,'untrained_model_sha256':summaries[(label,'untrained')]['model_sha256'],'final_model_sha256':summaries[(label,'final')]['model_sha256']}
-audit['four_complete_48_case_result_sets'] = len(results) == 4
-chat_path = ROOT/'evidence/expanded/terminal_chat.json'
-if chat_path.exists():
-    chat = read(chat_path)
-    assert len(chat['turns']) == 3
-    assert chat['model_sha256'] == audit['runs']['expanded']['final_model_sha256']
-    audit.update({'chat_turns':3, 'chat_model_matches_expanded_final':True,
-                  'screenshot':'evidence/expanded/terminal_chat.png'})
-import zipfile
-for label in ['starter','expanded']:
-    run = runs[label]
-    with zipfile.ZipFile(str(run)+'.zip') as archive:
-        files = {str(p.relative_to(run)):p for p in run.rglob('*') if p.is_file()}
-        assert {n for n in archive.namelist() if not n.endswith('/')} == set(files)
-        assert all(archive.read(name) == p.read_bytes() for name,p in files.items())
-audit['main_zip_byte_checks'] = True
-write(ROOT/'evidence/acceptance.json',audit);write(ROOT/'evidence/comparison.json',metrics)
-with (ROOT/'evidence/comparison.csv').open('w') as f:
- w=csv.DictWriter(f,fieldnames=list(metrics[0]));w.writeheader();w.writerows(metrics)
-# Every sample receives a written assessment, including all setup samples.
-review=['# Sample review','', 'Every saved BOS sample is reproduced below. Empty strings are labeled explicitly, never omitted. The four samples at each main stage use temperature 0.8, seed 2026, and a 32-token maximum. Evaluations use a separate 24-token continuation limit.','']
-for label in ['setup','starter','expanded']:
- for p in sorted((runs[label]/'samples').glob('*.txt')):
-  stage=int(p.stem.split('_')[1]);samples=p.read_text().split('\n');assert len(samples)==4
-  review += [f'## {label}, step {stage}','']
-  for i,s in enumerate(samples):
-   if not s: assessment='Empty: EOS was selected before any visible token; this is a real output.'
-   elif label=='setup' or stage==0:assessment='Garbled word sequence with no stable sentence structure; an untrained or only briefly trained sample.'
-   elif label=='expanded' and stage==1500 and i==1:assessment='Template-shaped but semantically mixed: a teacher is used where the classroom template normally names a place, and peach/harvest belong to the fruit domain.'
-   elif label=='expanded' and stage==3000 and i==1:assessment='Grammatical fragments combine incoherently: putting a light room to a small pear has no clear meaning.'
-   else:assessment='Coherent within a repeated classroom template; this shows local pattern learning, not broad language competence.'
-   review += [f'**Sample {i+1}:** {textcell(s)}','',assessment,'']
-(ROOT/'evidence/sample_review.md').write_text('\n'.join(review))
-# All 192 case continuations and failures, with explicit unknown and choice details.
-lines=['# Complete evaluation review','', 'All 192 original cases remain here and in the original JSON/CSV folders. Choice correctness and free-text quality are different. Empty continuations are retained. This is a public development benchmark.','']
-for (label,stage),rows in results.items():
- lines += [f'## {label} / {stage}','', '| Case | Category | Status | Expected | Picked | Score | Missing prompt words | Missing choices | Actual free continuation |','|---|---|---|---|---|---:|---|---|---|']
- for x in rows:
-  lines.append('| '+' | '.join([x['id'],x['category'],x['status'],x['expected'],str(x['predicted_choice']),str(x['score']),', '.join(x['unknown_prompt_words']) or 'none',', '.join(x['unknown_choices']) or 'none',textcell(x['generated_text'])])+' |')
- lines += ['', 'Failed case IDs: '+', '.join(x['id'] for x in rows if not x['score'])+'.','']
-(ROOT/'evidence/evaluation_review.md').write_text('\n'.join(lines))
-# Full coordinate precision and full probability tables, not a truncated vector.
-lines=['# Token, embedding, probability, and update evidence','', 'These explanations were written by Codex at the user’s request; they are not represented as independently written student answers.','']
-neighbors={}
-for label in ['starter','expanded']:
- d=data[label];i=d['inspection'];v=d['tokenization']['vocabulary'];u=i['first_update'];cp=read(runs[label]/'checkpoint.json')
- def near(table):
-  q=table[i['token_id']];qn=math.sqrt(sum(x*x for x in q));r=[]
-  for n,row in enumerate(table):
-   if n==i['token_id']:continue
-   sim=sum(a*b for a,b in zip(q,row))/(qn*math.sqrt(sum(x*x for x in row)))
-   r.append((v[n],sim))
-  return sorted(r,key=lambda x:x[1],reverse=True)[:3]
- neighbors[label]={'before':near(cp['initial_embeddings']),'after':near(cp['weights']['wte'])}
- lines += [f'## {label}: customer, ID {i["token_id"]}','', f'The word tokenizer lowercases words and separates punctuation. The ID is an arbitrary lookup row, not a magnitude or a measure of meaning. `customer` selects row {i["token_id"]} in a {len(v)} × 64 token table. The expanded vocabulary assigns a different row than the starter. Position vectors are separate. The token table is tied to the output projection.','', '| Coordinate (zero-based) | Before training | After 3,000 steps |','|---:|---:|---:|']
- for n,(a,b) in enumerate(zip(i['embedding_before'],i['embedding_after'])):lines.append(f'| {n} | {a!r} | {b!r} |')
- lines += ['', 'Each of the 64 coordinates is learned jointly; no coordinate has an assigned human concept. The model adds position embeddings, mixes earlier context through causal attention, and applies feed-forward layers, GELU, residual connections, and LayerNorm. A 3D PCA plot compresses these 64 dimensions and can distort distance. Neighbors below use the full 64-number vectors.','',f'Nearest cosine neighbors before: {neighbors[label]["before"]}. After: {neighbors[label]["after"]}. Shared designed sentence contexts can explain similar vectors; this is not proof of human-like meaning.','',f'**First real update:** coordinate {u["coordinate"]} began at `{u["before"]!r}`, its recorded loss gradient was `{u["gradient"]!r}`, the effective learning rate was `{u["learning_rate"]!r}`, and AdamW moved it to `{u["after"]!r}` (delta `{u["after"]-u["before"]!r}`).'.replace(']!r}',']}'),'', 'The positive gradient says that locally increasing this coordinate increases this batch’s next-token loss, with other coordinates held fixed. The recorded gradient is before global norm clipping. The observed update is after clipping and AdamW, including momentum, adaptive scaling, and weight decay. It is not simply minus learning rate times the raw gradient. Warmup makes the first learning rate 0.00001, although the chosen base rate is 0.001. Later updates can reverse a coordinate’s direction. This is an actual training gradient, distinct from the notebook’s illustrative a*a+a derivative.','', f'**Probabilities for `{i["prefix"]}`:** softmax converts contextual logits into a distribution over all {len(v)} tokens. Cross-entropy penalizes low probability on the observed next token; backpropagation supplies gradients for the update. Sampling draws from this distribution without changing weights. All probabilities below are raw temperature-1 inspection values, not normalized over four eval choices.','', '| Token | ID | Before | After |','|---|---:|---:|---:|']
- for n,t in enumerate(v):lines.append(f'| {t} | {n} | {i["probabilities_before"][n]!r} | {i["probabilities_after"][n]!r} |')
- lines += ['', 'First-block, first-head attention over BOS, the, customer: `'+json.dumps(i['attention_rows'])+'`. Future positions have zero probability because of the causal mask. These attention weights mix context; they are not the token embedding and are not a complete explanation of a prediction.','']
-(ROOT/'evidence/learning_checkpoints.md').write_text('\n'.join(lines));write(ROOT/'evidence/neighbors.json',neighbors)
-print(json.dumps(audit,indent=2))
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def read(path):
+    return json.loads((ROOT / path).read_text())
+
+
+def cell(value):
+    return str(value).replace("|", "\\|").replace("\n", " ")
+
+
+def table(headers, rows):
+    return "\n".join(["| " + " | ".join(headers) + " |",
+                      "| " + " | ".join(["---"] * len(headers)) + " |"] +
+                     ["| " + " | ".join(cell(x) for x in row) + " |" for row in rows])
+
+
+def pct(value):
+    return "undefined" if value is None else f"{value:.2%}"
+
+
+def link(path, label):
+    return f"[{label}]({path})"
+
+
+def main():
+    experiments = read("experiments.json")
+    runs = {label: Path(experiments[label]["run"]) for label in ("starter", "expanded")}
+    config = {k: read(p / "config.json") for k, p in runs.items()}
+    summaries = {(label, stage): read(path / "language_evals" / stage / "eval_summary.json")
+                 for label, path in runs.items() for stage in ("untrained", "final")}
+    results = {(label, stage): read(path / "language_evals" / stage / "eval_results.json")
+               for label, path in runs.items() for stage in ("untrained", "final")}
+    assert [summaries[k]["overall"]["correct"] for k in summaries] == [9, 20, 7, 24]
+    acceptance = read("evidence/current-acceptance.json")
+    assert acceptance["status"] == "PASS"
+    chat = read("evidence/current-chat/transcript.json")
+    assert chat["model_sha256"] == summaries[("expanded", "final")]["model_sha256"]
+    assert len(chat["turns"]) == 3
+    parts = ["# Class 4: learning to train a tiny language model\n",
+             "The classroom model improved from **9/48 to 20/48** on the fixed four-choice tests. "
+             "The fresh expanded model improved from **7/48 to 24/48**. Its added opposites and "
+             "negation lessons did **not** produce a successful extension-test answer: two opposites "
+             "cases became scorable but remained wrong, and all negation cases remained unscorable. "
+             "The higher final total came from the familiar-word rephrasing tests. These are "
+             "**public development tests**, not an unseen test of general understanding.\n",
+             "[Executed classroom notebook](custom_llm.ipynb) · "
+             "[Executed expanded notebook](custom_llm_expanded.ipynb) · "
+             "[Acceptance checks](evidence/current-acceptance.json) · "
+             "[All 192 case results and continuations](docs/all-evals.md) · "
+             "[Real terminal recording](evidence/current-chat/terminal.cast)\n",
+             "**Which results are current?** This README describes only the two runs in "
+             "[experiments.json](experiments.json). Earlier experiments already existed in this "
+             "repository and remain preserved. Their [prior report](https://github.com/tess-rubin/"
+             "class-4-custom-llm/blob/a52ef411ee9f80ce50deb658039cdf7b645421a4/README.md) belongs "
+             "to that earlier revision; its scores and corpus are not substituted for this session's results.\n",
+             "## Four complete result sets\n"]
+    rows = []
+    comparison = []
+    for (label, stage), summary in summaries.items():
+        overall = summary["overall"]
+        folder = runs[label] / "language_evals" / stage
+        rows.append([label, stage, f"{overall['correct']}/48 ({pct(overall['success_rate_all_cases'])})",
+                     f"{overall['correct']}/{overall['scorable']} ({pct(overall['accuracy_scorable_cases'])})",
+                     f"{overall['scorable']}/48 ({pct(overall['coverage'])})",
+                     " / ".join(link(folder / file, title) for file, title in
+                                [("eval_results.json", "JSON"), ("eval_results.csv", "CSV"),
+                                 ("eval_summary.json", "summary")])])
+        comparison.append({"experiment": label, "stage": stage, **overall})
+    parts.append(table(["Experiment", "Stage", "All-case success", "Scorable accuracy", "Case coverage", "Complete evidence"], rows))
+    parts.append("""
+**Four-choice scores:** the model receives only the prefix. The unchanged scorer
+compares the probabilities of four possible next words, then checks its selection
+against the answer key. The key and choices never enter the model input. Ties
+receive zero. The four probabilities are entries from the full vocabulary, not
+probabilities rescaled to sum to one across those four words.
+
+**Free continuations:** a separate sampling step writes an unrestricted reply.
+That reply does not determine the four-choice score. A correct choice can coexist
+with a poor reply, and an empty reply is retained when the end token is sampled.
+
+**Coverage:** a case is scorable only if every prompt word and every choice is in
+the saved vocabulary and the prompt fits the context. Unscorable cases still
+count as zero out of all 48. Scorable accuracy uses a smaller denominator. This
+case-level coverage is different from the fraction of unknown individual tokens
+in the training or validation text. Coverage does not change during a run because
+training changes weights, not that run's fixed vocabulary.
+
+## Choices and prediction, recorded before training
+
+The user selected local CPU execution, **3,000 weight updates**, a configured
+learning rate of **0.001**, and **opposites plus negation**. The
+[pretraining prediction](experiment_plan.json) was that training loss would fall,
+samples would become more corpus-like, validation loss might improve, and added
+data might improve coverage and some scores while failures remained. The
+prediction was supported for loss and familiar templates, but the targeted
+extension tests did not show success.
+
+A step is one batch update, not a whole pass through the corpus. The selected
+budget and rate are the assignment's starting suggestions. Too large a rate can
+cause unstable updates; too small a rate can make learning slow. The supplied
+100-step warmup and cosine decay remain unchanged. The first actual rate is
+0.00001, with a peak setting of 0.001 and decay toward one tenth of that setting.
+
+Both runs use seed 42, CPU with up to four threads, two transformer blocks, four
+attention heads, 64-number embeddings, 48-token context, batches of 32, no dropout,
+and AdamW with its supplied clipping and regularization. The expanded model starts
+fresh; it does not continue the starter's weights. Seeds/settings stay the same,
+but a larger vocabulary changes tensor dimensions and IDs, so initial models are
+not identical. Splits and loss panels stay fixed **within** each experiment.
+
+## Teaching data and separation
+
+The starter reads an empty `corpus/starter/` folder and uses the supplied classroom
+generator. The expanded run reads only `corpus/expanded/`, adding exactly
+[120 opposites passages](corpus/expanded/opposites.txt) and
+[120 negation passages](corpus/expanded/negation.txt). They are newly composed,
+AI-assisted, shareable text with invented people and ordinary situations, not
+private records or copied third-party material. See the
+[source choices and review](docs/corpus-design.md) and
+[pretraining extraction audit](evidence/extension_pretraining_review.json).
+
+Contextual contrasts could teach relationships such as heavy/light and noisy/quiet.
+Negation examples distinguish rejected actions from what actually happens. Each
+line is one sentence, with semicolons where needed to keep a correction together;
+the supplied loader extracts exactly 240 unique passages, each at most 19 tokens.
+There are no PDFs, OCR claims, or extraction warnings. This small addition does
+not guarantee coverage of the particular words used in every public test.
+
+The classroom reservation removes 160 generated passages containing exact test
+prefixes before deduplication, the 90/10 split, or vocabulary construction. Imported
+files and final passages also pass the supplied prefix guard. All teaching text
+was additionally reviewed for copied test stories, close story paraphrases,
+answer lists, and outputs; none were identified. Exact matching alone cannot
+prove semantic separation, so both source files are public for inspection.
+
+Evals, answer keys, reports, source notes, transcripts, and result folders stay
+outside both corpus inputs. Vocabulary comes only from the training split. A
+source file can contribute passages to both train and validation; this is not a
+test on unseen source files. Classroom validation shares templates with training.
+""")
+    data_rows = []
+    for label, path in runs.items():
+        c = config[label]
+        m = read(path / "corpus_manifest.json")
+        v = read(path / "vocabulary_report.json")
+        data_rows.append([label, m["unique_passages"], c["train_documents"], c["validation_documents"],
+                          c["vocabulary_size"], v["training_types"], len(v["omitted_types"]),
+                          pct(c["training_unknown_rate"]), pct(c["validation_unknown_rate"])])
+    parts.append(table(["Corpus", "Unique passages", "Train", "Validation", "Vocab incl. specials", "Training types", "Omitted train types", "Train UNK", "Validation UNK"], data_rows))
+    parts.append("The expansion contributes **216 training passages and 24 validation passages**. "
+                 "The 495 expanded training token types all fit below the 509-type cap; its "
+                 "validation UNK rate comes from words absent from training. The 240 added passages "
+                 "are about 5% of all 4,832 unique passages. No vocabulary entries were inserted "
+                 "from eval text.\n")
+    parts.append("## Group and category breakdowns\n\nEach entry is **correct / total (scorable)**. Every case remains in its denominator.\n")
+    for dimension in ("group", "category"):
+        keys = sorted(summaries[("starter", "untrained")][f"by_{dimension}"])
+        values = []
+        for key in keys:
+            row = [key]
+            for summary in summaries.values():
+                s = summary[f"by_{dimension}"][key]
+                row.append(f"{s['correct']}/{s['total']} ({s['scorable']})")
+            values.append(row)
+        parts.append(table([dimension.title(), "Starter untrained", "Starter final", "Expanded untrained", "Expanded final"], values))
+    parts.append("""
+The four additional final successes are rephrasing cases that were already
+scorable in the starter. Their score improvement is therefore not just a change
+in vocabulary coverage. However, the changed corpus also changes the split and
+initialization dimensions, so one seed does not isolate a causal effect of the
+new teaching patterns.
+
+The two newly scorable opposites cases remain wrong: `lang_28` selects **heavy**
+instead of **cold**, and `lang_29` selects **early** instead of **full**. This is
+coverage improvement without successful answer selection. The third opposites
+case still lacks the distractor `round`. All three negation cases remain
+unscorable: the teaching material does not supply all their color, purchase, or
+door-state words. More training on the unchanged vocabulary could not fix those
+missing words. We preserve these failures rather than tuning the corpus after
+seeing them or claiming successful negation learning.
+
+### Actual continuations, including failures
+""")
+    selected = []
+    for label, case_ids in [("starter", ["lang_18", "lang_28"]), ("expanded", ["lang_18", "lang_21", "lang_28", "lang_29", "lang_31", "lang_33"])]:
+        lookup = {r["id"]: r for r in results[(label, "final")]}
+        for case_id in case_ids:
+            row = lookup[case_id]
+            selected.append([label, case_id, row["prompt"], row["predicted_choice"] or "unscorable",
+                             row["expected"], row["generated_text"] or "[empty response]"])
+    parts.append(table(["Model", "Case", "Prompt", "Choice", "Expected", "Actual free continuation"], selected))
+    parts.append("For example, the expanded bus case gets the choice `route` right but freely "
+                 "continues with “taxi was in the truck .” A four-choice success is a narrow "
+                 "measurement, not evidence of a good unrestricted response. "
+                 "[Every prompt, status, missing word, score, and continuation](docs/all-evals.md) is retained.\n")
+    parts.append("## Losses and every saved sample\n\nThese are **fixed panels of 20 training and 20 validation documents** per run, "
+                 "averaging non-padding next-token targets, including EOS. They are small estimates, "
+                 "not full-corpus losses. Different corpora and vocabularies make raw loss values "
+                 "unsuitable for ranking the two models. The expanded training panel contains zero "
+                 "extension passages and its validation panel contains only one, so the curves are "
+                 "weak evidence about the added skills.\n")
+    for label, path in runs.items():
+        parts.append(f"### {label.title()}\n\n![{label} fixed-panel loss]({path}/training_curves.svg)\n")
+        history = read(path / "history.json")
+        parts.append(table(["Step", "Training panel loss", "Validation panel loss"],
+                           [[r["step"], repr(r["training_loss"]), repr(r["validation_loss"])] for r in history]))
+        parts.append(f"Full measured table: [history.json]({path}/history.json), [training.csv]({path}/training.csv).\n")
+        for step in (0, 1500, 3000):
+            sample_path = path / "samples" / f"step_{step:04d}.txt"
+            samples = (ROOT / sample_path).read_text().split("\n")
+            assert len(samples) == 4
+            parts.append(f"**Step {step}** — [full saved file]({sample_path})\n\n```text\n" +
+                         "\n".join(sample if sample else "[empty sample]" for sample in samples) + "\n```\n")
+    parts.append("Both runs change from unstructured word sequences to familiar classroom "
+                 "templates by step 1,500. Some starter samples are unchanged at step 3,000; "
+                 "additional steps do not require every seeded sample to change. These plausible "
+                 "templates coexist with the extension failures above.\n")
+    parts.append("## How learning works, using this run\n\nThis is an **assisted explanatory draft**. The student selected settings and "
+                 "categories; Codex helped execute, inspect, and explain the experiments. "
+                 "It is not a claim that the student independently wrote the teaching corpus "
+                 "or has already explained every concept. [Plain-language study guide](docs/learning-guide.md).\n")
+    p = runs["starter"]
+    inspection = read(p / "inspection.json")
+    tokenization = read(p / "tokenization.json")
+    first = inspection["first_update"]
+    parts.append(f"A **corpus** is the collection of practice sentences. This model splits words "
+                 f"and punctuation into **tokens**. The token `customer` has **ID {inspection['token_id']}**, "
+                 "an arbitrary lookup number, not an amount of meaning. Its **embedding** is "
+                 "the row of 64 learned numbers selected by that ID. The network combines these "
+                 "numbers using learned weights to predict the next token.\n")
+    parts.append(f"[Tokenization and IDs]({p}/tokenization.json) · [Actual inspection]({p}/inspection.json)\n")
+    for state in ("before", "after"):
+        vector = inspection[f"embedding_{state}"]
+        formatted = "[\n" + ",\n".join("  " + ", ".join(repr(v) for v in vector[i:i+4]) for i in range(0,64,4)) + "\n]"
+        parts.append(f"<details>\n<summary>All 64 customer embedding coordinates {state} training</summary>\n\n```json\n{formatted}\n```\n\n</details>\n")
+    vocabulary = tokenization["vocabulary"]
+    prob_rows = []
+    for word in ["customer", "reviewed", "recommended", "ordered", "selected", "compared"]:
+        i = vocabulary.index(word)
+        prob_rows.append([word, pct(inspection["probabilities_before"][i]), pct(inspection["probabilities_after"][i])])
+    parts.append("For the same prefix **“the customer”**, these are next-token probabilities "
+                 "before sampling temperature is applied:\n")
+    parts.append(table(["Possible next token", "Before training", "After training"], prob_rows))
+    parts.append("The trained model assigns probability to purchase-related verbs because those "
+                 "continuations recur in the teaching text. A probability is a model estimate, "
+                 "not a truth score. Sampling chooses a token from the resulting distribution, "
+                 "appends it to the context, and repeats until EOS or the output limit.\n")
+    parts.append(table(["First update of customer coordinate 0", "Measured value"],
+                       [["Before", repr(first["before"])], ["Recorded gradient (before clipping)", repr(first["gradient"])],
+                        ["Actual warmup learning rate", repr(first["learning_rate"])], ["After", repr(first["after"])],
+                        ["Change: after − before", repr(first["after"] - first["before"])]]))
+    parts.append("**Loss** measures how poorly the predicted probabilities match the actual next "
+                 "tokens in the practice sentences. Backpropagation computes **gradients**, which "
+                 "describe how changes to weights affect loss locally. AdamW uses those gradients "
+                 "to make **weight updates**. Repeating this process changes later predictions. "
+                 "The recorded gradient is before norm clipping; AdamW also uses adaptive scaling, "
+                 "momentum and weight decay. The measured change therefore is not simply minus "
+                 "the displayed gradient times the configured 0.001. The first small update is "
+                 "different from the total change across 3,000 steps.\n\n"
+                 "**Attention** lets each position combine information from earlier tokens; the "
+                 "causal mask prevents looking at future answers. Learned token and position "
+                 "embeddings, attention blocks, and other weights work together. The saved "
+                 "attention rows show one head, not a full explanation of a decision.\n")
+    neighbors = []
+    for label, path in runs.items():
+        checkpoint = read(path / "checkpoint.json")
+        words = checkpoint["vocabulary"]
+        index = words.index("customer")
+        for stage, matrix in [("before",checkpoint["initial_embeddings"]),("after",checkpoint["weights"]["wte"])]:
+            matrix = np.asarray(matrix)
+            unit = matrix / np.linalg.norm(matrix,axis=1,keepdims=True)
+            similarities = unit @ unit[index]
+            similarities[index] = -np.inf
+            neighbors.append([label,stage,", ".join(f"{words[j]} ({similarities[j]:.4f})" for j in np.argsort(-similarities)[:3])])
+    parts.append(table(["Run", "Stage", "Three cosine neighbors of customer in full 64D"], neighbors))
+    parts.append("The trained neighbors share classroom contexts; this supports a narrow "
+                 "distributional pattern, not broad word understanding. Open "
+                 "[embedding-viewer.html](embedding-viewer.html) locally and load a run's "
+                 "`checkpoint.json` to inspect the vectors. The 3D PCA projection compresses "
+                 "64 dimensions; it can distort apparent distances. Cosine neighbors above use all 64.\n")
+    parts.append("## Temperature changes sampling, not weights\n\nThe comparisons use temperatures "
+                 "**0.3, 0.8, 1.2**, the same BOS starting token, and sampling seed 2026. "
+                 "Lower temperature concentrates probabilities; higher temperature spreads them "
+                 "out. Neither retrains the network. The baseline sample timeline also uses "
+                 "temperature 0.8 and seed 2026, with four samples of up to 32 new tokens. "
+                 "Eval/chat generation instead uses a prefix, up to 24 new tokens, per-case/turn "
+                 "seeds, and masks generated BOS. These two supplied generators are preserved.\n")
+    temp_rows = []
+    temp_doc = ["# Every temperature sample\n\nSaved text is shown verbatim, with empty strings explicitly marked. No retraining occurs between temperatures.\n"]
+    for label,path in runs.items():
+        temperatures=read(path / "temperature_comparison.json")
+        parts.append(f"{label.title()}: [complete temperature data]({path}/temperature_comparison.json).\n")
+        for temperature,samples in temperatures.items():
+            temp_rows.append([label,temperature,samples[0] or "[empty sample]"])
+            temp_doc.append(f"## {label}, temperature {temperature}\n\n```text\n"+'\n'.join(s or '[empty sample]' for s in samples)+'\n```\n')
+    parts.append(table(["Run", "Temperature", "First actual sample"],temp_rows))
+    parts.append("The expanded 1.2 sample becomes garbled, while its lower-temperature samples "
+                 "follow classroom patterns. The starter's complete 0.8 and 1.2 sample sets happen "
+                 "to be identical for this seed; higher temperature does not guarantee different "
+                 "text on each draw. [All temperature samples](docs/temperature-samples.md).\n")
+    parts.append("## Working chat and real interaction evidence\n\nThe unchanged [chat.py](chat.py) "
+                 "loads the expanded run's full `model.pt` and vocabulary. It is a tiny "
+                 "continuation model, not an instruction-trained assistant. Every prompt starts "
+                 "fresh, with a 48-token context. It reports unknown words and truncation; it "
+                 "does not update weights or put chats into the corpus.\n")
+    parts.append(f"Run: `{runs['expanded']}`. Model-state SHA-256: `{chat['model_sha256']}`.\n")
+    parts.append(table(["Purpose", "Actual prompt", "Actual reply", "Unknown prompt words", "Seed"],
+                       [[purpose,t["prompt"],t["response"] or "[empty response]",", ".join(t["unknown_prompt_words"]) or "none",t["seed"]]
+                        for purpose,t in zip(["Familiar", "Extension-related", "Limitation"],chat["turns"])]))
+    parts.append("The familiar prompt yields a purchase-template continuation. The extension "
+                 "prompt contains unknown `gate` and `closed` and produces an incoherent "
+                 "response. The quantum prompt contains two unknown words and receives "
+                 "irrelevant classroom text. None of these replies is replaced by a canned answer.\n\n"
+                 "[Native transcript](evidence/current-chat/transcript.json) · "
+                 "[Actual terminal output](evidence/current-chat/terminal.txt) · "
+                 "[Asciinema v2 recording](evidence/current-chat/terminal.cast) · "
+                 "[Offline playback page](evidence/current-chat/playback.html) · "
+                 "[Recording verification](evidence/current-chat/verification.json)\n\n"
+                 "The recording captures real PTY output and echoed input with timestamps. "
+                 "The helper enters three prompts into the running interface; it does not "
+                 "construct replies. To watch, download/open `playback.html` in a browser and "
+                 "press Play. It is self-contained and needs no network. The `.cast` is also "
+                 "usable in an asciinema player. This is a recording, not a simulated screenshot. "
+                 "It is stored separately from the notebook's complete results ZIP.\n")
+    parts.append("## Runtime and complete artifact links\n\nMeasured locally on "
+                 f"`{config['starter']['hardware']}`, Python 3.13.15, PyTorch 2.14.0, NumPy 2.5.3. "
+                 "CPU was explicitly selected; no pretrained weights or external model API "
+                 "were used. Training times below include milestone panel/sample checks, "
+                 "but exclude separate before/after language eval cells. They are measurements "
+                 "of these runs, not a runtime guarantee for another machine.\n")
+    runtime_rows=[]
+    for label,path in runs.items():
+        t=read(path / 'training_summary.json')
+        runtime_rows.append([label,t['completed_steps'],config[label]['parameters'],repr(t['elapsed_seconds']),t['interrupted']])
+    parts.append(table(['Run','Completed steps','Parameters','Training-loop seconds','Interrupted'],runtime_rows))
+    parts.append("The [separate 10-step setup notebook](evidence/setup/custom_llm_10_steps.ipynb) "
+                 "completed before either main run and is not included in the four-row results. "
+                 "A first setup attempt could not start its kernel inside the sandbox; no cells "
+                 "trained in that attempt. The successful rerun used local loopback kernel access. "
+                 "[Setup test log](evidence/setup/tests.txt) records all 14 supplied tests passing.\n")
+    for label,path in runs.items():
+        parts.append(f"**{label.title()}:** " + " · ".join([
+            link(experiments[label]['notebook'],'executed notebook'),link(path,'complete run folder'),link(str(path)+'.zip','complete ZIP')]+[
+            link(path/file,title) for file,title in [('config.json','config'),('training_summary.json','training summary'),
+            ('training.csv','loss CSV'),('history.json','loss JSON'),('tokenization.json','tokens and IDs'),
+            ('inspection.json','vectors, probabilities and update'),('temperature_comparison.json','temperatures'),
+            ('corpus_manifest.json','corpus manifest'),('vocabulary_report.json','vocabulary'),('split.json','split and panels'),
+            ('eval_separation.json','separation'),('corpus.txt','training-source text before split'),
+            ('model.pt','trained weights'),('model_untrained.pt','untrained weights'),('checkpoint.json','viewer embeddings')]])+'\n')
+    parts.append("The ZIPs and executed notebooks are separate files; both complete ZIPs are "
+                 "retained locally and published. `checkpoint.json` is for the embedding viewer; "
+                 "`model.pt` is the inference network. Neither contains all optimizer/random "
+                 "state for exact training resume. Notebook FileLink outputs retain real local "
+                 "paths; use this README's repository links when browsing on GitHub.\n")
+    parts.append("## Reproduce the notebook, evaluation and chat\n\nRun from the repository root. "
+                 "The input notebooks differ from the preserved upstream notebook only in "
+                 "experiment settings and the recorded prediction. The runner explicitly uses "
+                 "the current Python interpreter for its kernel, saves real outputs after each "
+                 "cell, and rejects an existing output notebook. Each training run also creates "
+                 "a new timestamped run folder and ZIP.\n\n```sh\n"
+                 "python3 -m venv .venv\n"
+                 ".venv/bin/python -m pip install -r requirements-local.txt\n"
+                 ".venv/bin/python -m unittest test_language_evals test_corpus\n"
+                 ".venv/bin/python scripts/execute_notebook.py notebooks/setup.ipynb --output results/new-setup.ipynb\n"
+                 ".venv/bin/python scripts/execute_notebook.py notebooks/starter.ipynb --output results/new-starter.ipynb\n"
+                 ".venv/bin/python scripts/execute_notebook.py notebooks/expanded.ipynb --output results/new-expanded.ipynb\n```\n\n"
+                 "The [complete environment lock](requirements-lock.txt) records the exact installed "
+                 "versions. `requirements-local.txt` adds NumPy because the supplied scorer uses "
+                 "`tensor.numpy()`, plus notebook execution tooling. The original requirements remain intact.\n")
+    parts.append('```sh\n'+ '\n'.join(
+        f'.venv/bin/python run_evals.py --model {path}/{filename} --stage {stage} --output results/new-{label}-{stage}'
+        for label,path in runs.items() for stage,filename in [('untrained','model_untrained.pt'),('final','model.pt')])+'\n'+
+        f'.venv/bin/python chat.py --model {runs["expanded"]}/model.pt --transcript results/my-chat.json\n```\n')
+    parts.append("Enter a prompt and press Enter; `/quit` saves the transcript and exits. Use a "
+                 "new transcript filename and new evaluation output directories. All four "
+                 "saved-model commands were exercised in [separate rerun folders](evidence/current-reruns/); "
+                 "every saved case, probability, score and continuation exactly matches its "
+                 "original notebook result. [Rerun verification](evidence/current-reruns/verification.json).\n")
+    parts.append(f"```sh\n.venv/bin/python scripts/verify_artifacts.py --starter-run {runs['starter']} "
+                 f"--expanded-run {runs['expanded']} --starter-notebook custom_llm.ipynb "
+                 "--expanded-notebook custom_llm_expanded.ipynb "
+                 "--starter-rerun evidence/current-reruns/starter/final "
+                 "--expanded-rerun evidence/current-reruns/expanded/final\n```\n")
+    parts.append("This verifier confirms all 192 case records, CSV/JSON consistency, untouched "
+                 "fixed sources, the seeded training-only vocabularies and splits, saved initial "
+                 "and trained models, both executed notebooks, and complete ZIP contents. "
+                 "The [source provenance](provenance.json) identifies starter revision "
+                 "`9e04ddb6aacb8efcb790e70c62550ca55e0f2a75` and the pinned nanoGPT revision "
+                 "`3adf61e154c3fe3fca428ad6bc3818b27a3b8291`. "
+                 "[Original README](STARTER_README.md) · [nanoGPT license](NANOGPT_LICENSE) · "
+                 "[Unchanged 48-case suite](evals/language_evals.json) · [Unchanged runner](run_evals.py).\n")
+    parts.append("## Limitation and next experiment\n\nThe model learns repeated classroom "
+                 "patterns much better than unfamiliar tasks. More known words do not guarantee "
+                 "correct relationships, as both newly scorable opposites failures demonstrate. "
+                 "The tiny loss panels mostly represent the original classroom text. One seed "
+                 "and changing splits/vocabularies limit causal conclusions.\n\n"
+                 "A next experiment would add a more substantial, independently written set "
+                 "of varied relational and negation lessons, inspect vocabulary coverage from "
+                 "training material, and evaluate the added skills with balanced panels and "
+                 "multiple seeds. Keep these public tests as development tests and create an "
+                 "additional untouched holdout before further tuning. More steps alone cannot "
+                 "add missing vocabulary. No minimum score is required; completeness and honest "
+                 "interpretation matter more than reporting only successes.\n")
+    (ROOT/'README.md').write_text('\n\n'.join(parts).rstrip()+'\n')
+    (ROOT/'docs/temperature-samples.md').write_text('\n'.join(temp_doc))
+    review=['# Complete current evaluation review\n\nAll 48 unchanged cases at all four stages. Empty strings remain explicit. The scoring key is evidence only and never training data.\n']
+    for (label,stage),rows in results.items():
+        review.append(f'## {label} / {stage}\n')
+        for r in rows:
+            review.append(f"### {r['id']} — {r['category']}\n\nPrompt: `{r['prompt']}`\n\n"
+                          f"Status: **{r['status']}**; score **{r['score']}**; selected **{r['predicted_choice']}**; expected **{r['expected']}**.\n\n"
+                          f"Unknown prompt words: {', '.join(r['unknown_prompt_words']) or 'none'}. "
+                          f"Unknown choices: {', '.join(r['unknown_choices']) or 'none'}.\n\n"
+                          f"Actual continuation (seed {r['sample_seed']}):\n\n```text\n{r['generated_text'] or '[empty response]'}\n```\n")
+    (ROOT/'docs/all-evals.md').write_text('\n'.join(review))
+    stream=io.StringIO();writer=csv.DictWriter(stream,fieldnames=list(comparison[0]));writer.writeheader();writer.writerows(comparison)
+    (ROOT/'evidence/current-comparison.csv').write_text(stream.getvalue())
+    print('Built README, all-case review, temperature samples, and comparison CSV from current measured evidence.')
+
+
+if __name__ == '__main__':
+    main()

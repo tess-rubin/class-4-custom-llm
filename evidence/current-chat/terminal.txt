@@ -1,0 +1,13 @@
+number of parameters: 0.13M
+Tiny language model: short continuations, not a general assistant.
+Each prompt starts fresh. Context: 48 tokens. Type /quit to exit.
+You: the customer
+Model: selected the brand after checking the price .
+You: at the station the gate is not closed but
+Model: offering rather than sold .
+Unknown words: closed, gate
+You: explain quantum teleportation
+Model: the student early apple , while the full page left .
+Unknown words: quantum, teleportation
+You: /quit
+Saved transcript: /Users/tessrubin/Documents/ChatGPT/Assignment 3 2/evidence/current-chat/transcript.json
