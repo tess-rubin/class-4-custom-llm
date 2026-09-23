@@ -1,5 +1,0 @@
-experiment,stage,correct,total,scorable,success_rate_all_cases,accuracy_scorable_cases,coverage
-starter,untrained,9,48,24,0.1875,0.375,0.5
-starter,final,20,48,24,0.4166666666666667,0.8333333333333334,0.5
-expanded,untrained,7,48,26,0.14583333333333334,0.2692307692307692,0.5416666666666666
-expanded,final,24,48,26,0.5,0.9230769230769231,0.5416666666666666

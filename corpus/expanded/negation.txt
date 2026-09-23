@@ -1,120 +1,120 @@
-The teacher did not cancel the lesson, so the class met at school as planned.
-Jules was not at the office because the work was at the market today.
-The patient had no appointment in the morning; the visit was in the evening.
-Rin went to the kitchen instead of the garden.
-The delivery never reached the store; the package stayed at the station.
-No student stayed in the room when the class went outside.
-The nurse worked at school today rather than at the hospital.
-The cook did not leave early and stayed until the meal ended.
-Our team avoided the crowded market and met in the quiet office.
-The teacher was away from the classroom, working in the garden instead.
-Jules did not change the drawing; the picture remained on the page.
-Rin kept the report instead of returning it.
-The student made no change to the first line, leaving the original words in place.
-The teacher rejected the first answer and accepted the second answer.
-Our office did not use paper for the report, so everyone read it on a screen.
-The cook wrote the order on paper rather than speaking it aloud.
-No words were missing from the page; the full sentence was still there.
-The student did not copy the picture and drew a new design instead.
-The nurse left the note without a date, with the last line still empty.
-Jules removed the wrong date and kept the correct date beside it.
-The bus did not stop at the market and continued to the station.
-Rin went on foot rather than taking a taxi to school.
-The bicycle stayed at the office because Jules chose to walk.
-Our train was not late and reached the station at the planned time.
-The truck could not use the narrow road and followed the wide road instead.
-The patient avoided the long path and took the short path.
-The class did not cross the river but stayed on the same side.
-No car entered the garden; all traffic stayed on the road.
-The delivery worker left the bicycle behind and carried the package on foot.
-The teacher turned back instead of continuing down the long path.
-The cook added no water to the soup and kept its original taste.
-Jules left the bread untouched and ate a pear instead.
-The student did not drink the juice; the glass remained full.
-Rin chose a warm meal rather than the cold fruit.
-The kitchen had no peaches, so the cook served a pear.
-The patient refused more food and kept the plate empty.
-The cook never made the fruit hot and served it cold.
-Our teacher ate at school instead of returning to the office for the meal.
-The shopper did not eat the orange and saved it for the next day.
-Rin left the bowl on the table without tasting the soup.
-The student did not break the glass and held it with care.
-Jules avoided the heavy package and carried the light blanket instead.
-The worker left the chair where it was rather than moving it.
-No towel fell from the shelf; all the towels stayed in place.
-Rin could not lift the table alone, so the teacher helped carry it.
-The patient kept the blanket instead of giving it back to the nurse.
-The cook did not use the broken cup and selected an undamaged glass.
-Our team carried the table rather than dragging it across the floor.
-The delivery worker did not leave the package outside but set it on the table.
-The teacher left the high shelf empty and put all the reports on the low shelf.
-The lesson had no music; the class used the time for drawing.
-Jules stopped singing and listened to the teacher instead.
-The nurse did not shout and used a quiet voice beside the patient.
-No bell rang at the station, so the room remained silent.
-Rin turned off the music before reading the report in silence.
-The class was quiet rather than noisy after the lesson.
-The teacher avoided a loud voice and wrote the task on the board.
-Our office had no visitors that morning, leaving the waiting room quiet.
-The cook stopped the noisy machine and mixed the food by hand.
-Jules did not answer aloud but wrote a reply on paper.
-The worker did not wash the coat, so it remained dirty.
-Rin cleaned the table without touching the dishes on it.
-The student left the towel dry by keeping it away from the water.
-No rain reached the covered chair, which stayed dry all afternoon.
-The nurse did not reuse the dirty cloth and took a clean cloth instead.
-The cook wiped the floor rather than leaving the spilled juice there.
-Jules left the shoes outside instead of bringing dirt into the kitchen.
-The class had no clean cups, so the teacher washed the used cups.
-The dirty window stayed dirty because no one cleaned it.
-Rin kept the wet paper off the report and placed it on a towel.
-The student did not finish the task; half of the page still needed work.
-Jules had no work left after answering every question.
-The teacher moved the lesson to the next day rather than holding it today.
-Rin stopped work before the report was complete and continued after a rest.
-The office never received the reply, so the question remained unanswered.
-Our team did not repeat the whole test and checked only the last result.
-The cook completed the meal without help and worked alone.
-No time remained for another question, so the class ended the lesson.
-The patient stayed awake instead of sleeping during the journey.
-The nurse had not finished the visit when the next patient arrived.
-The student made no payment because the course was free.
-Jules returned the package rather than keeping an unwanted item.
-The store did not change the price; it stayed the same.
-Rin checked the price without placing an order.
-The customer received no delivery because the order was canceled.
-Our office kept the old program instead of installing the update.
-The bank did not give the customer a loan and rejected the application.
-The shopper refused the damaged item and selected an undamaged product.
-The market accepted the returned item without another payment.
-The buyer did not request support and completed the order alone.
-The nurse found no patient on the bench because everyone was in the garden.
-Jules stayed indoors rather than joining the class outside.
-The teacher did not put the plant near the window and left it by the wall.
-Rin kept the towel off the floor by hanging it on a hook.
-The office had no chairs beside the table, so everyone stood during the meeting.
-The cook stored the fruit on a shelf instead of leaving it on the floor.
-The student did not sit at the high table and used the low table instead.
-Our team left the middle of the room clear, with all the chairs by the wall.
-The delivery worker found no package at the station; it was already at the market.
-The patient remained in bed rather than walking to the garden.
-The screen did not show a picture because the program was displaying words.
-Jules removed the wrong number and entered the correct number.
-The student had no paper and wrote the answer on the board.
-Rin refused to guess and asked the teacher for more information.
-The report contained no names, only the dates and places of the visits.
-Our team did not trust the first result and repeated the test.
-The website showed no price because the item was unavailable.
-The teacher rejected an incomplete answer and requested the missing detail.
-The program did not save the changes, leaving the old data unchanged.
-The office stopped using the broken screen and worked with paper instead.
-The cook did not fill the basket, leaving room for another piece of fruit.
-Jules took only one towel and left the rest on the shelf.
-The student used no water while cleaning the table with a dry cloth.
-Rin emptied the bottle instead of adding more juice.
-No fruit remained on the plate after the class ate every piece.
-The nurse did not give away the last blanket and kept it for the next patient.
-The market sold none of the peaches that morning, leaving the basket full.
-Our teacher left some questions unanswered rather than finishing every page.
-The delivery truck carried no load on its return journey and traveled empty.
-The cook saved half the bread instead of serving all of it.
+The buyer did not order a bicycle because the old bicycle still worked.
+Our teacher did not cancel the lesson when the bus arrived late.
+The nurse did not open the package until the doctor checked its label.
+A shopper did not buy juice because the bag was already full.
+The bank did not approve the loan before checking the payment record.
+The team did not release the program while the update was incomplete.
+No truck entered the narrow gate during the morning delivery.
+No student left the school before the lesson ended.
+No fruit remained in the empty basket after the market closed.
+No patient waited in the small office during the quiet hour.
+No buyer selected the dirty cup from the kitchen shelf.
+No payment appeared in the report because the order was cancelled.
+The package is not empty because a book is inside.
+Our classroom is not dark because the bright lamp is on.
+The fruit is not dry after the shopper washes it.
+A full basket is not easy to lift when the fruit is heavy.
+The new program is not ready while its code contains an error.
+The bus is not at the station because it is still on the road.
+The doctor never leaves the patient without explaining the treatment.
+Our teacher never puts wet paper inside the old book.
+The careful buyer never accepts a package without checking its condition.
+The store never sells juice from a dirty cup.
+The team never treats a failed update as a successful delivery.
+The bank never calls an unpaid loan a completed payment.
+A delivery without a label cannot reach the correct buyer.
+A bicycle without a wheel cannot carry the shopper to the market.
+The lesson without examples is difficult for the new student.
+The patient without an appointment waits for the nurse to check the schedule.
+A report without a title is difficult to find among many reports.
+The office without a lamp becomes dark after sunset.
+The teacher asks the student not to write on the table.
+The nurse tells the visitor not to leave the door open.
+The buyer asks the store not to send another heavy package.
+The team decides not to change the program before the review.
+The shopper chooses not to carry the full basket alone.
+The doctor advises the patient not to miss the next visit.
+Neither the truck nor the bus can use the narrow path.
+Neither the buyer nor the shopper wants the dirty fruit.
+Neither the teacher nor the student hears the quiet bell.
+Neither the code nor the report explains the missing update.
+Neither the bank nor the store accepts the damaged card.
+Neither the nurse nor the doctor calls an empty room crowded.
+The buyer wanted a pear instead of an apple for the journey.
+Our teacher used a picture instead of a long report during the lesson.
+The shopper took a bicycle instead of a taxi to the near store.
+The nurse brought a clean sheet instead of the dirty cloth.
+The team reviewed the code instead of releasing the unfinished program.
+The bank recorded a deposit instead of a new loan.
+The school has a garden but does not have a kitchen.
+Our store has fruit but does not sell furniture.
+The report explains the price but does not explain the delivery delay.
+The student knows the route but does not know the travel time.
+The program saves a file but does not print a page.
+The nurse checks the appointment but does not change the treatment.
+The teacher is not angry when a student asks a question.
+The buyer is not satisfied when the package arrives broken.
+The doctor is not available during the long journey.
+The bus is not late when it reaches the station before the agreed time.
+The apple is not fresh after many days beside the warm window.
+The new chair is not heavy enough to need two people.
+The shopper cannot carry the large table on the small bicycle.
+The student cannot read the report in a dark room.
+The truck cannot enter while the gate remains closed.
+The team cannot send data when the system has no connection.
+The buyer cannot make a payment with an empty account.
+The nurse cannot fill the cup when the jar contains no water.
+There is no fruit in the box marked for old books.
+There is no lesson today because the school is closed.
+There is no code inside the printed price report.
+There is no patient in the room that the nurse just cleaned.
+There is no bus service on this narrow garden path.
+There is no return address on the damaged package.
+The buyer rejected the weak bag and accepted the strong bag.
+Our teacher refused the noisy room and chose a quiet room.
+The nurse removed the dirty sheet and kept the clean sheet.
+The shopper avoided the rough path and followed the smooth road.
+The team rejected the failed update and kept the working program.
+The bank refused the incomplete form and requested a complete form.
+The student did not forget the book and brought it to the lesson.
+The buyer did not lose the receipt and used it for the return.
+The doctor did not miss the visit and arrived at the hospital early.
+The driver did not stop at the closed store and continued to the market.
+The team did not delete the file and found the old data later.
+The shopper did not drop the fruit and reached the kitchen with a full bag.
+An unopened package does not show the buyer what is inside.
+An unpaid order does not appear in the list of completed purchases.
+An unfinished lesson does not give the student the full explanation.
+An unwashed cup does not belong on the clean shelf.
+An unread report does not help the team understand the update.
+An unused ticket does not prove that the shopper took the train.
+The store has only pears today so the buyer cannot purchase a mango there.
+The jar contains only juice so the cook cannot take a peach from it.
+The lesson covers only reading so the class does not practice code today.
+The truck carries only books so no fruit arrives in this delivery.
+The office opens only in the morning so the shopper cannot visit at night.
+The bank accepts only complete forms so an unfinished form is not accepted.
+The nurse says the closed window must remain closed during the treatment.
+The teacher says the empty box must not contain the wet paper.
+The buyer says the old address should not receive the new package.
+The team says the failed program must not replace the working system.
+The doctor says the patient should not leave before the final check.
+The shopper says the damaged fruit must not go into the clean basket.
+The school is closed on the holiday and no lesson takes place.
+The market has sold all its pears and no pear remains for the buyer.
+The jar has lost all its juice and cannot fill another cup.
+The truck has left the station and is no longer beside the bus.
+The teacher has finished the report and no longer needs the old notes.
+The program has stopped and does not process another order.
+A clean label does not mean that the whole package is clean.
+A low price does not guarantee that the product has good quality.
+A long report does not always give a clear explanation.
+A new program does not always work better than an old program.
+A near hospital does not make every journey short when the road is closed.
+A quiet student does not necessarily lack a question about the lesson.
+The buyer bought two cups but neither cup was broken.
+The teacher read two reports but neither report mentioned the new lesson.
+The nurse checked two rooms but neither room contained a patient.
+The shopper tried two gates but neither gate was open.
+The team reviewed two programs but neither program saved the missing file.
+The bank received two forms but neither form included the required signature.
