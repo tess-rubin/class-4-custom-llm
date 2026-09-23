@@ -1,5 +1,105 @@
 {
-  "status": "Pending initial publication; verification runs immediately after push.",
+  "checked_utc": "2026-09-23T00:14:12.949555+00:00",
   "repository": "https://github.com/tess-rubin/class-4-custom-llm",
-  "local_notebook_html_exports": "Both succeeded; upstream embedded SVG yields an alt-text warning, preserved in notebook_render.log."
+  "anonymous_http_checks": [
+    {
+      "url": "https://github.com/tess-rubin/class-4-custom-llm",
+      "status": 200,
+      "bytes": 414401,
+      "authentication": "none; standard urllib with no credentials or cookie jar; TLS verified with certifi"
+    },
+    {
+      "url": "https://github.com/tess-rubin/class-4-custom-llm/blob/main/notebooks/starter.executed.ipynb",
+      "status": 200,
+      "bytes": 384041,
+      "authentication": "none; standard urllib with no credentials or cookie jar; TLS verified with certifi"
+    },
+    {
+      "url": "https://github.com/tess-rubin/class-4-custom-llm/blob/main/notebooks/expanded.executed.ipynb",
+      "status": 200,
+      "bytes": 384963,
+      "authentication": "none; standard urllib with no credentials or cookie jar; TLS verified with certifi"
+    },
+    {
+      "path": "notebooks/starter.executed.ipynb",
+      "status": 200,
+      "bytes": 67801,
+      "sha256": "e9d253e7c5bc96a1d409d14057eb499e3b28a108f14b119a078ad506554e3098",
+      "exact_match_local": true,
+      "authentication": "none; TLS verified"
+    },
+    {
+      "path": "notebooks/expanded.executed.ipynb",
+      "status": 200,
+      "bytes": 68542,
+      "sha256": "82dc544189d1e2ca694da16f28b198a3b59a659637460f8e46286c9ecda4446c",
+      "exact_match_local": true,
+      "authentication": "none; TLS verified"
+    },
+    {
+      "path": "llm_runs/20260922T235726_929057Z/model.pt",
+      "status": 200,
+      "bytes": 457163,
+      "sha256": "44f0f67db8622a4c7dad0636bd18ef9a95f1f466a95c58e7059076ad38932ace",
+      "exact_match_local": true,
+      "authentication": "none; TLS verified"
+    },
+    {
+      "path": "llm_runs/20260922T235754_788488Z/model.pt",
+      "status": 200,
+      "bytes": 559243,
+      "sha256": "2fe0d716b5c473cef6d98e0737cab6ba475ccb11ec4fdd4eaf6cdd738ff15522",
+      "exact_match_local": true,
+      "authentication": "none; TLS verified"
+    },
+    {
+      "path": "llm_runs/20260922T235726_929057Z.zip",
+      "status": 200,
+      "bytes": 1106900,
+      "sha256": "329db858a88392e30c1d4142fbe1fd795d4d070981a3a3dd5827c2f62012b963",
+      "exact_match_local": true,
+      "authentication": "none; TLS verified"
+    },
+    {
+      "path": "llm_runs/20260922T235754_788488Z.zip",
+      "status": 200,
+      "bytes": 1877034,
+      "sha256": "171f7392fdc0f9422f0e8bb2eba933f148fe0d9f28cba5b6ecdbbc18bba7305b",
+      "exact_match_local": true,
+      "authentication": "none; TLS verified"
+    }
+  ],
+  "local_html_exports": "Both notebooks rendered successfully with nbconvert; preserved upstream SVG emits alt-text warning.",
+  "browser_render_checks": [
+    {
+      "notebook": "notebooks/starter.executed.ipynb",
+      "checks": {
+        "anonymous_sign_in_link_visible": true,
+        "file_display_iframe_present": true,
+        "completed_3000_steps_visible": true,
+        "final_eval_output_visible": true,
+        "measured_final_loss_visible": true,
+        "checkpoint_explanations_visible": true
+      },
+      "screenshot": "evidence/public_starter_notebook.png",
+      "observed_output_excerpt": "- StaticText \"Language evals (final): 20/48; 24/48 cases have usable vocabulary/context.\\n  extend_corpus: 0/24 correct; 0 scorable\\n  starter_patterns: 16/16 correct; 16 scorable\\n  starter_transfer: 4/8 correct; 8 scorable\\n\""
+    },
+    {
+      "notebook": "notebooks/expanded.executed.ipynb",
+      "checks": {
+        "anonymous_sign_in_link_visible": true,
+        "file_display_iframe_present": true,
+        "completed_3000_steps_visible": true,
+        "final_eval_output_visible": true,
+        "measured_final_loss_visible": true,
+        "checkpoint_explanations_visible": true
+      },
+      "screenshot": "evidence/public_expanded_notebook.png",
+      "observed_output_excerpt": "- StaticText \"Language evals (final): 26/48; 27/48 cases have usable vocabulary/context.\\n  extend_corpus: 2/24 correct; 3 scorable\\n  starter_patterns: 16/16 correct; 16 scorable\\n  starter_transfer: 8/8 correct; 8 scorable\\n\""
+    }
+  ],
+  "status": "passed",
+  "completed_utc": "2026-09-23T00:17:14.307882+00:00",
+  "initial_browser_commit": "406fa00",
+  "note": "Notebook files are unchanged by the subsequent documentation and verification commit."
 }

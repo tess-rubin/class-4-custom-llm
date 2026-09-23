@@ -1,0 +1,30 @@
+{
+  "starter": {
+    "command": ".venv/bin/python scripts/execute_experiment.py starter --output-root results/reproduce-starter",
+    "original_run": "llm_runs/20260922T235726_929057Z",
+    "rerun": "llm_runs/20260923T001440_915449Z",
+    "exact_matches": {
+      "history.json": true,
+      "split.json": true,
+      "tokenization.json": true,
+      "inspection.json": true,
+      "language_evals/untrained/eval_results.json": true,
+      "language_evals/final/eval_results.json": true
+    },
+    "completed_steps": 3000
+  },
+  "expanded": {
+    "command": ".venv/bin/python scripts/execute_experiment.py expanded --output-root results/reproduce-expanded",
+    "original_run": "llm_runs/20260922T235754_788488Z",
+    "rerun": "llm_runs/20260923T001440_931414Z",
+    "exact_matches": {
+      "history.json": true,
+      "split.json": true,
+      "tokenization.json": true,
+      "inspection.json": true,
+      "language_evals/untrained/eval_results.json": true,
+      "language_evals/final/eval_results.json": true
+    },
+    "completed_steps": 3000
+  }
+}

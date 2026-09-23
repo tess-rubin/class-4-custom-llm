@@ -57,6 +57,18 @@
     "evidence/expanded/terminal_chat.png": {
       "bytes": 103107,
       "sha256": "06df8507d88469181514151f322caa1d90db7fc1a989912b1d725062e550f9fd"
+    },
+    "evidence/public_starter_notebook.png": {
+      "bytes": 122239,
+      "sha256": "6dac5f649fab197e79ded2731d3ee4067ec6682d8d8635e2995c5e81e38587be"
+    },
+    "evidence/public_expanded_notebook.png": {
+      "bytes": 123162,
+      "sha256": "75ca433ae88b6064a6079932734503122eea149f33303d9aa8b20e565fb52fc0"
+    },
+    "evidence/command-check/main_notebook_reruns.json": {
+      "bytes": 1056,
+      "sha256": "a23f8ee8c75adcb8a35a030fb3d5008d783ac81eb498cc3f112a2e73253514f3"
     }
   },
   "main_zip_content_checks": "Both ZIPs exactly match every file in their complete run folders."

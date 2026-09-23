@@ -1,0 +1,111 @@
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Executing expanded cell 2/25
+Executing expanded cell 4/25
+PyTorch: 2.14.0 | device: cpu
+Executing expanded cell 6/25
+Source: Synthetic classroom sentences plus corpus folder files
+Reserved eval passages excluded before splitting: 160
+Imported files: 2 | new unique passages: 240
+negation.txt → 120 passages | preview: 'The buyer did not order a bicycle because the old bicycle still worked.\nOur teacher did not cancel t'
+opposites.txt → 120 passages | preview: 'A large truck carries the fruit while a small bicycle carries one bag.\nThe buyer selected a small pe'
+Unique documents: 4,832 | train: 4,348 | validation: 484
+Five training documents:
+today the store focused on order and the new shopper .
+we learned about the different mortgage during a discussion of payment .
+we learned about the new brand during a discussion of design .
+the different educator was mentioned in the student report yesterday .
+today the office focused on update and the different application .
+Executing expanded cell 8/25
+Vocabulary: 512 | held-out unknown-token rate: 0.74%
+Training unknown-token rate: 0.11% | omitted types: 53
+Text: today the store focused on order and the new shopper . 
+Tokens: ['today', 'the', 'store', 'focused', 'on', 'order', 'and', 'the', 'new', 'shopper', '.'] 
+IDs: [1, 478, 470, 452, 199, 336, 343, 21, 470, 321, 439, 3, 2]
+Input → target: [('<BOS>', 'today'), ('today', 'the'), ('the', 'store'), ('store', 'focused'), ('focused', 'on'), ('on', 'order'), ('order', 'and'), ('and', 'the'), ('the', 'new'), ('new', 'shopper'), ('shopper', '.'), ('.', '<EOS>')]
+Executing expanded cell 10/25
+number of parameters: 0.13M
+Embedding table: (512, 64) | parameters: 135936
+Word: customer | ID: 132 
+Initial vector: [0.009061218239367008, -0.03260874003171921, 0.005258228629827499, -0.01798621192574501, 0.02368611842393875, -0.030968481674790382, -0.008420705795288086, 0.023956436663866043, -0.001047832309268415, -0.006097061093896627, 0.009586067870259285, 0.009040297009050846, 0.014224537648260593, 0.00910073984414339, 0.00902748666703701, 0.000461111543700099, 0.007412962149828672, 0.027247468009591103, 0.008273597806692123, 0.00246995035558939, 0.015787944197654724, 0.014689198695123196, 0.016150323674082756, 0.01578063890337944, 0.003954176325351, -0.0006238142377696931, -0.02294796146452427, -0.030363712459802628, -0.041599273681640625, -0.043624814599752426, -0.00230757356621325, 0.0060727596282958984, -0.029625611379742622, -0.003706748131662607, 0.001197207486256957, 0.025781210511922836, -0.002539118519052863, 0.017335249111056328, 0.0021552734542638063, -0.00963991042226553, 0.02651037648320198, -0.00949062593281269, -0.021327141672372818, -0.013120285235345364, 0.004430943634361029, -0.013064084574580193, 0.014101347886025906, -0.007958877831697464, 0.0145695386454463, 0.013481233268976212, 0.02235708199441433, -0.003784727305173874, -0.02059360407292843, 0.035770680755376816, 0.06724569946527481, 0.006758303381502628, 0.024258991703391075, -0.02098243124783039, 0.015216519124805927, -0.01116271037608385, 0.0026609133929014206, -0.017149999737739563, -0.012078197672963142, 0.01432572491466999]
+For a*a+a at a=2, the gradient is 5.0 (2*a+1).
+Executing expanded cell 12/25
+{'step': 0, 'training_loss': 6.22927713394165, 'validation_loss': 6.240468502044678}
+
+Samples:
+harvest garden patient two requires returned afternoon circle travel incomplete cleaned deposit food teacher price sell leaf on detail smooth likes hard dirty easily leaves client agreed correct night early place pear
+sheet they object low keeps pear compared desk instead two schedule even cups must in during support farm helped report delivery other dark into only truck leaf incomplete customer purchase error reviews
+easy buyer lifts blue noon course for path late print shelf orange cup jar path fit moves final drips cars finishes lesson afternoon brought appear replace cancelled crowded book therapist sells connection
+discussion classroom cancelled application closed treatment harvest cars bridge rejected banana pillow object lamp another good every visit item receipt separate above us lowers review go final bag software lift class lifts
+Executing expanded cell 14/25
+Language evals (untrained): 7/48; 27/48 cases have usable vocabulary/context.
+  extend_corpus: 0/24 correct; 3 scorable
+  starter_patterns: 5/16 correct; 16 scorable
+  starter_transfer: 2/8 correct; 8 scorable
+Executing expanded cell 16/25
+Step 500: batch loss 0.9906
+Step 1,000: batch loss 0.9874
+{'step': 1500, 'training_loss': 0.8422227501869202, 'validation_loss': 0.7159116864204407}
+
+Samples:
+the new bond was mentioned in the return report yesterday .
+our teacher has a question about the new peach and harvest .
+the different platform was mentioned in the data report yesterday .
+our school has a question about the local professor and course .
+Step 2,000: batch loss 0.9059
+Step 2,500: batch loss 0.7474
+{'step': 3000, 'training_loss': 0.7753631472587585, 'validation_loss': 0.7057347893714905}
+
+Samples:
+the report about the deposit explains the return in detail .
+our teacher puts a light room to a small pear .
+we learned about the local tutor during a discussion of lesson .
+our school has a question about the new teacher and course .
+Completed: 3000 | seconds: 10.01 
+First update: {'token': 'customer', 'coordinate': 0, 'before': 0.009061218239367008, 'gradient': 0.003039734438061714, 'learning_rate': 1e-05, 'after': 0.009051217697560787}
+Executing expanded cell 18/25
+Word: customer 
+Trained vector: [-0.07983891665935516, 0.019717765972018242, -0.05191129818558693, -0.15066863596439362, -0.1533573567867279, 0.0633956640958786, 0.061037905514240265, -0.02157415635883808, 0.1300603598356247, -0.09530441462993622, 0.1674170196056366, -0.04649562016129494, 0.0976874902844429, 0.13121141493320465, -0.09648952633142471, 0.1489732563495636, -0.10574287176132202, 0.006116638425737619, -0.09746146947145462, -0.036881349980831146, 0.06902304291725159, 0.13589400053024292, -0.04382069408893585, -0.0412348210811615, -0.04648227617144585, 0.10605710744857788, 0.015349779278039932, -0.07123661786317825, -0.0071476115845143795, -0.06704676151275635, -0.07612365484237671, 0.06610821187496185, -0.04039260745048523, -0.05304838344454765, 0.05512264743447304, -0.10056600719690323, 0.03364027291536331, -0.11104673147201538, -0.057444341480731964, -0.016603760421276093, -0.03309116140007973, 4.152394103584811e-05, -0.12030605971813202, -0.03864654153585434, -0.11324124783277512, 0.10198244452476501, -0.04345685988664627, -0.0039024350699037313, 0.07158564031124115, -0.05414199084043503, 0.15090562403202057, 0.04312397167086601, -0.1206589788198471, 0.13533133268356323, 0.17647461593151093, 0.0334136039018631, 0.04777210205793381, -0.12747493386268616, -0.01961721107363701, 0.09217072278261185, -0.055533867329359055, 0.13880780339241028, -0.04118107259273529, 0.02186286263167858]
+Before predictions: [('customer', 0.0032), ('finished', 0.003), ('long', 0.0029), ('jar', 0.0028), ('loan', 0.0028)]
+After predictions: [('ordered', 0.188), ('reviewed', 0.1685), ('selected', 0.1665), ('recommended', 0.16), ('returned', 0.154)]
+First-head attention: [[1.0, 0.0, 0.0], [0.032198935747146606, 0.967801034450531, 0.0], [0.509200930595398, 0.10522764176130295, 0.3855714201927185]]
+Temperature comparison: {
+  "0.3": [
+    "the report about the deposit explains the return in detail .",
+    "our market has a question about the new merchandise and quality .",
+    "the report about the tutor explains the lesson in detail .",
+    "the new truck was mentioned in the route report yesterday ."
+  ],
+  "0.8": [
+    "the report about the deposit explains the return in detail .",
+    "our teacher puts a light room to a small pear .",
+    "we learned about the local tutor during a discussion of lesson .",
+    "our school has a question about the new teacher and course ."
+  ],
+  "1.2": [
+    "the subscriber patient was mentioned in the purchase report yesterday .",
+    "our teacher puts the light room to smooth learned hard unpaid .",
+    "the report about the tutor explains the lesson in detail .",
+    "our school has a question about the new teacher and course ."
+  ]
+}
+Executing expanded cell 20/25
+Language evals (final): 26/48; 27/48 cases have usable vocabulary/context.
+  extend_corpus: 2/24 correct; 3 scorable
+  starter_patterns: 16/16 correct; 16 scorable
+  starter_transfer: 8/8 correct; 8 scorable
+Executing expanded cell 22/25
+Saved: llm_runs/20260923T001440_931414Z 
+Results ZIP: /Users/tessrubin/Desktop/Assignment 3/class-4-custom-llm/llm_runs/20260923T001440_931414Z.zip
+Executing expanded cell 24/25
+You: the customer 
+Model: selected the offering after checking the price .
+Saved chat and refreshed ZIP: /Users/tessrubin/Desktop/Assignment 3/class-4-custom-llm/llm_runs/20260923T001440_931414Z.zip
+{
+  "experiment": "expanded",
+  "notebook": "results/reproduce-expanded/expanded.executed.ipynb",
+  "run_dir": "llm_runs/20260923T001440_931414Z",
+  "zip": "llm_runs/20260923T001440_931414Z.zip",
+  "wall_seconds": 13.235866069793701,
+  "notebook_sha256": "2283906856681c5fd4508d02411daeb533ee159f666408832e2d0f3cb7706a32",
+  "python_executable": "/Users/tessrubin/Desktop/Assignment 3/class-4-custom-llm/.venv/bin/python"
+}

@@ -112,6 +112,11 @@
   "notes": [
     "Exact normalized matching is not a semantic leakage detector.",
     "All 240 passages were composed before the suite stories were read; semantic review found no copied stories, answer lists, or close story paraphrases. Generic concepts intentionally overlap."
-  ]
+  ],
+  "four_complete_48_case_result_sets": true,
+  "chat_turns": 3,
+  "chat_model_matches_expanded_final": true,
+  "screenshot": "evidence/expanded/terminal_chat.png",
+  "main_zip_byte_checks": true
 }
 README written

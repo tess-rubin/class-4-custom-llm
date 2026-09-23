@@ -47,6 +47,22 @@ for label in ['starter','expanded']:
  original=read(ROOT/'custom_llm.ipynb');origcodes=[c for c in original['cells'] if c['cell_type']=='code']
  assert all(c['source']==o['source'] for c,o in zip(codes[1:],origcodes[1:]))
  audit['runs'][label]={'run_dir':str(r.relative_to(ROOT)),'two_48_case_sets_complete':True,'saved_eval_rerun_exact_match':True,'source_code_cells_unchanged_except_corpus_folder':True,'no_eval_prefix_in_any_split':True,'split_disjoint':True,'source_file_leakage_checks':leakage,'panels':panels,'eval_token_unknown_rates':eval_unknown,'extension_split_counts':{p:len(set(split[p])&extra) for p in ['train','validation']},'notebook_code_cells_executed':len(codes),'errors':0,'untrained_model_sha256':summaries[(label,'untrained')]['model_sha256'],'final_model_sha256':summaries[(label,'final')]['model_sha256']}
+audit['four_complete_48_case_result_sets'] = len(results) == 4
+chat_path = ROOT/'evidence/expanded/terminal_chat.json'
+if chat_path.exists():
+    chat = read(chat_path)
+    assert len(chat['turns']) == 3
+    assert chat['model_sha256'] == audit['runs']['expanded']['final_model_sha256']
+    audit.update({'chat_turns':3, 'chat_model_matches_expanded_final':True,
+                  'screenshot':'evidence/expanded/terminal_chat.png'})
+import zipfile
+for label in ['starter','expanded']:
+    run = runs[label]
+    with zipfile.ZipFile(str(run)+'.zip') as archive:
+        files = {str(p.relative_to(run)):p for p in run.rglob('*') if p.is_file()}
+        assert {n for n in archive.namelist() if not n.endswith('/')} == set(files)
+        assert all(archive.read(name) == p.read_bytes() for name,p in files.items())
+audit['main_zip_byte_checks'] = True
 write(ROOT/'evidence/acceptance.json',audit);write(ROOT/'evidence/comparison.json',metrics)
 with (ROOT/'evidence/comparison.csv').open('w') as f:
  w=csv.DictWriter(f,fieldnames=list(metrics[0]));w.writeheader();w.writerows(metrics)
