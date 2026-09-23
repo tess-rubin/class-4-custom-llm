@@ -1,0 +1,6 @@
+-r requirements.txt
+nbclient
+nbconvert
+ipykernel
+# The supplied scorer hashes tensors through NumPy.
+numpy

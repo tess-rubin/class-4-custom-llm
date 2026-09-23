@@ -1,0 +1,16 @@
+test_blank_pdf_and_corrupt_pdf_fail_clearly (__main__.CorpusTests.test_blank_pdf_and_corrupt_pdf_fail_clearly) ... invalid pdf header: b'not a'
+EOF marker not found
+ok
+test_chunking_preserves_all_tokens (__main__.CorpusTests.test_chunking_preserves_all_tokens) ... ok
+test_duplicates_are_reported (__main__.CorpusTests.test_duplicates_are_reported) ... ok
+test_empty_and_invalid_utf8 (__main__.CorpusTests.test_empty_and_invalid_utf8) ... ok
+test_empty_folder (__main__.CorpusTests.test_empty_folder) ... ok
+test_encrypted_pdf (__main__.CorpusTests.test_encrypted_pdf) ... ok
+test_ignored_files_and_no_link_fetching (__main__.CorpusTests.test_ignored_files_and_no_link_fetching) ... ok
+test_mixed_formats_and_nested_files (__main__.CorpusTests.test_mixed_formats_and_nested_files) ... ok
+test_mixed_pdf_pages_warn (__main__.CorpusTests.test_mixed_pdf_pages_warn) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.012s
+
+OK

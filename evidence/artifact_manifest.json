@@ -1,0 +1,63 @@
+{
+  "created_utc": "2026-09-23T00:11:00.618366+00:00",
+  "sha256_kind": "SHA-256 of complete file bytes; distinct from scorer model state hash",
+  "files": {
+    "notebooks/setup.executed.ipynb": {
+      "bytes": 67933,
+      "sha256": "b1c4f5812c8d61273eef066ec5467e0ef2442e887f8fca3e189641a169cb11e6"
+    },
+    "notebooks/starter.executed.ipynb": {
+      "bytes": 67801,
+      "sha256": "e9d253e7c5bc96a1d409d14057eb499e3b28a108f14b119a078ad506554e3098"
+    },
+    "notebooks/expanded.executed.ipynb": {
+      "bytes": 68542,
+      "sha256": "82dc544189d1e2ca694da16f28b198a3b59a659637460f8e46286c9ecda4446c"
+    },
+    "llm_runs/20260922T235702_609513Z.zip": {
+      "bytes": 1111760,
+      "sha256": "1496deaba3956f2b11b012abec50bd9a314178e1a70f7ea0122f0f715129fd3f"
+    },
+    "llm_runs/20260922T235702_609513Z/model.pt": {
+      "bytes": 457163,
+      "sha256": "7e2b4341de0d5362c75c2e62d9e036cd07eee021ee7d8a08ffbbba9ddb916180"
+    },
+    "llm_runs/20260922T235702_609513Z/model_untrained.pt": {
+      "bytes": 459295,
+      "sha256": "6e1c99227a68e1e83cdd58ea28bf1bdddb113f43ba7b6e15cdd80498b3dd685a"
+    },
+    "llm_runs/20260922T235726_929057Z.zip": {
+      "bytes": 1106900,
+      "sha256": "329db858a88392e30c1d4142fbe1fd795d4d070981a3a3dd5827c2f62012b963"
+    },
+    "llm_runs/20260922T235726_929057Z/model.pt": {
+      "bytes": 457163,
+      "sha256": "44f0f67db8622a4c7dad0636bd18ef9a95f1f466a95c58e7059076ad38932ace"
+    },
+    "llm_runs/20260922T235726_929057Z/model_untrained.pt": {
+      "bytes": 459295,
+      "sha256": "6e1c99227a68e1e83cdd58ea28bf1bdddb113f43ba7b6e15cdd80498b3dd685a"
+    },
+    "llm_runs/20260922T235754_788488Z.zip": {
+      "bytes": 1877034,
+      "sha256": "171f7392fdc0f9422f0e8bb2eba933f148fe0d9f28cba5b6ecdbbc18bba7305b"
+    },
+    "llm_runs/20260922T235754_788488Z/model.pt": {
+      "bytes": 559243,
+      "sha256": "2fe0d716b5c473cef6d98e0737cab6ba475ccb11ec4fdd4eaf6cdd738ff15522"
+    },
+    "llm_runs/20260922T235754_788488Z/model_untrained.pt": {
+      "bytes": 561375,
+      "sha256": "55b364e728e8c345ce7174861099efa37fdab272b56139c2e0f0801046368bb5"
+    },
+    "evidence/expanded/terminal_chat.json": {
+      "bytes": 928,
+      "sha256": "a988988dd5a3b8cb578eaaa7e2502cf7a9995fd5b0302530224936a52256b49c"
+    },
+    "evidence/expanded/terminal_chat.png": {
+      "bytes": 103107,
+      "sha256": "06df8507d88469181514151f322caa1d90db7fc1a989912b1d725062e550f9fd"
+    }
+  },
+  "main_zip_content_checks": "Both ZIPs exactly match every file in their complete run folders."
+}

@@ -1,0 +1,23 @@
+{
+  "author": "Codex AI assistant, newly composed for this experiment; not independently written by the student",
+  "created_utc": "2026-09-22T23:55:43.689658+00:00",
+  "method": "240 individually written short teaching sentences; no model outputs, answer lists, or test stories were used as source material. Composed before reading the suite stories. Post-authoring exact-match and semantic review follow.",
+  "purposes": {
+    "opposites": "Teach contrasting properties in varied classroom, store, transport, health, and household situations.",
+    "negation": "Teach not, no, never, neither, without, cannot, refusal, and qualified inferences in varied situations."
+  },
+  "files": [
+    {
+      "file": "corpus/expanded/negation.txt",
+      "passages": 120,
+      "sha256": "8ae4970385624bc3b82d345dec2126b8c453597b0125f692c54befccdfea1030",
+      "maximum_tokens": 16
+    },
+    {
+      "file": "corpus/expanded/opposites.txt",
+      "passages": 120,
+      "sha256": "ff213c5fa6641ef2f9706a5e3e0fb0fa20011c6a3976b6ee72f64ae87eead5f6",
+      "maximum_tokens": 16
+    }
+  ]
+}

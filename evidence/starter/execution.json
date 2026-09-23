@@ -1,0 +1,10 @@
+{
+  "experiment": "starter",
+  "notebook": "notebooks/starter.executed.ipynb",
+  "run_dir": "llm_runs/20260922T235726_929057Z",
+  "zip": "llm_runs/20260922T235726_929057Z.zip",
+  "wall_seconds": 9.456341743469238,
+  "notebook_sha256": "e9d253e7c5bc96a1d409d14057eb499e3b28a108f14b119a078ad506554e3098",
+  "python_executable": "/Users/tessrubin/Desktop/Assignment 3/class-4-custom-llm/.venv/bin/python",
+  "post_execution_annotation": "Added Codex-authored evidence explanations in markdown only; all code outputs preserved."
+}

@@ -1,0 +1,35 @@
+{
+  "model": "llm_runs/20260922T235754_788488Z/model.pt",
+  "model_sha256": "666e97420e1e7333bb0445a57f86922274ae73020c75fbf6240845743d8f3ded",
+  "completed_steps": 3000,
+  "fresh_context_per_prompt": true,
+  "temperature": 0.8,
+  "max_tokens": 24,
+  "turns": [
+    {
+      "prompt": "the customer",
+      "seed": 2026,
+      "response": "selected the offering after checking the price .",
+      "unknown_prompt_words": [],
+      "prompt_truncated": false
+    },
+    {
+      "prompt": "the package is not empty because",
+      "seed": 2027,
+      "response": "the journey after the market heavy .",
+      "unknown_prompt_words": [],
+      "prompt_truncated": false
+    },
+    {
+      "prompt": "please explain why the sky is blue",
+      "seed": 2028,
+      "response": "mango in the kitchen .",
+      "unknown_prompt_words": [
+        "please",
+        "sky",
+        "why"
+      ],
+      "prompt_truncated": false
+    }
+  ]
+}

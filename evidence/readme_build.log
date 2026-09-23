@@ -1,0 +1,117 @@
+{
+  "preserved_sources": {
+    "nanogpt_model.py": true,
+    "run_evals.py": true,
+    "chat.py": true,
+    "evals/language_evals.json": true,
+    "custom_llm.py": true,
+    "custom_llm.ipynb": true,
+    "requirements.txt": true,
+    "NANOGPT_LICENSE": true
+  },
+  "canonical_suite_sha256": "1d7c503f34d88260d0ac897bc36b8ba621cccc1950aef47e7121e69b2c1c9e1d",
+  "suite_file_sha256": "e8affcd72841e3ed7da5c0b6b116327fe9f69c9abd66a1180d1d88ceaa3e17f7",
+  "extension_unique_passages": 240,
+  "runs": {
+    "starter": {
+      "run_dir": "llm_runs/20260922T235726_929057Z",
+      "two_48_case_sets_complete": true,
+      "saved_eval_rerun_exact_match": true,
+      "source_code_cells_unchanged_except_corpus_folder": true,
+      "no_eval_prefix_in_any_split": true,
+      "split_disjoint": true,
+      "source_file_leakage_checks": [],
+      "panels": {
+        "evaluation_train": {
+          "documents": 20,
+          "extension_documents": 0,
+          "nonpadding_targets": 253,
+          "sha256": "9024faee9e597746d8b5f5b9b988109ecf50fcfda4be9dde3ae4f8fa8bb54908"
+        },
+        "evaluation_validation": {
+          "documents": 20,
+          "extension_documents": 0,
+          "nonpadding_targets": 243,
+          "sha256": "d45b8b089f28ad47745b86c5cab1f624af4e87644a305f5ef40b5ed82681cd64"
+        }
+      },
+      "eval_token_unknown_rates": {
+        "prompt": {
+          "unknown_tokens": 134,
+          "total_tokens": 411,
+          "unknown_rate": 0.3260340632603406
+        },
+        "choices": {
+          "unknown_tokens": 90,
+          "total_tokens": 192,
+          "unknown_rate": 0.46875
+        }
+      },
+      "extension_split_counts": {
+        "train": 0,
+        "validation": 0
+      },
+      "notebook_code_cells_executed": 12,
+      "errors": 0,
+      "untrained_model_sha256": "73fcac5a3daaed81be800a450cc50c3cd932db3b3b1cb79b27401124eeb1f16b",
+      "final_model_sha256": "bf49f05b14d5417840f3b551aa61e28c0e521e6d5557f146f3961ffc1afbe84e"
+    },
+    "expanded": {
+      "run_dir": "llm_runs/20260922T235754_788488Z",
+      "two_48_case_sets_complete": true,
+      "saved_eval_rerun_exact_match": true,
+      "source_code_cells_unchanged_except_corpus_folder": true,
+      "no_eval_prefix_in_any_split": true,
+      "split_disjoint": true,
+      "source_file_leakage_checks": [
+        {
+          "source": "negation.txt",
+          "matches": []
+        },
+        {
+          "source": "opposites.txt",
+          "matches": []
+        }
+      ],
+      "panels": {
+        "evaluation_train": {
+          "documents": 20,
+          "extension_documents": 1,
+          "nonpadding_targets": 252,
+          "sha256": "241d75069daa146d712a30c294c1094e82ee6beaad430352e6132cf0bee6dbc6"
+        },
+        "evaluation_validation": {
+          "documents": 20,
+          "extension_documents": 0,
+          "nonpadding_targets": 248,
+          "sha256": "74fe6c9d41d6b1c0622aa1f125b402c62a740dc4570896d48379c79b324c3841"
+        }
+      },
+      "eval_token_unknown_rates": {
+        "prompt": {
+          "unknown_tokens": 60,
+          "total_tokens": 411,
+          "unknown_rate": 0.145985401459854
+        },
+        "choices": {
+          "unknown_tokens": 58,
+          "total_tokens": 192,
+          "unknown_rate": 0.3020833333333333
+        }
+      },
+      "extension_split_counts": {
+        "train": 215,
+        "validation": 25
+      },
+      "notebook_code_cells_executed": 12,
+      "errors": 0,
+      "untrained_model_sha256": "31278dc193b0a38dd8a3d11dbdf94981bc3d2b924b2e69a64cb828154ab978cd",
+      "final_model_sha256": "666e97420e1e7333bb0445a57f86922274ae73020c75fbf6240845743d8f3ded"
+    }
+  },
+  "notes": [
+    "Exact normalized matching is not a semantic leakage detector.",
+    "All 240 passages were composed before the suite stories were read; semantic review found no copied stories, answer lists, or close story paraphrases. Generic concepts intentionally overlap."
+  ]
+}
+README written

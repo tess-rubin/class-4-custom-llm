@@ -1,0 +1,9 @@
+{
+  "experiment": "setup",
+  "notebook": "evidence/command-check/setup/setup.executed.ipynb",
+  "run_dir": "llm_runs/20260923T000153_866362Z",
+  "zip": "llm_runs/20260923T000153_866362Z.zip",
+  "wall_seconds": 3.073214292526245,
+  "notebook_sha256": "6ed796c9e52b9a93d1f813e377574b20462f61e62db6e15bb89a41850d0fcf2a",
+  "python_executable": "/Users/tessrubin/Desktop/Assignment 3/class-4-custom-llm/.venv/bin/python"
+}

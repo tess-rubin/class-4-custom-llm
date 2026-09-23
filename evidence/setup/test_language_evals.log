@@ -1,0 +1,19 @@
+test_gold_answer_and_choices_are_not_in_model_prompt (__main__.LanguageEvalTests.test_gold_answer_and_choices_are_not_in_model_prompt) ... ok
+test_leakage_checks_normalization_multisentence_and_folder_scope (__main__.LanguageEvalTests.test_leakage_checks_normalization_multisentence_and_folder_scope) ... ok
+test_real_model_weights_mode_rng_and_repeatability (__main__.LanguageEvalTests.test_real_model_weights_mode_rng_and_repeatability) ... ok
+test_suite_is_diverse_and_starter_cases_have_supported_vocabulary (__main__.LanguageEvalTests.test_suite_is_diverse_and_starter_cases_have_supported_vocabulary) ... ok
+test_unknown_answers_do_not_receive_accidental_unk_credit (__main__.LanguageEvalTests.test_unknown_answers_do_not_receive_accidental_unk_credit) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.640s
+
+OK
+Language evals (final): 1/1; 1/1 cases have usable vocabulary/context.
+  extend_corpus: 1/1 correct; 1 scorable
+Language evals (final): 0/1; 1/1 cases have usable vocabulary/context.
+  extend_corpus: 0/1 correct; 1 scorable
+number of parameters: 0.01M
+Language evals (final): 1/2; 2/2 cases have usable vocabulary/context.
+  starter_patterns: 1/2 correct; 2 scorable
+Language evals (final): 0/1; 0/1 cases have usable vocabulary/context.
+  extend_corpus: 0/1 correct; 0 scorable

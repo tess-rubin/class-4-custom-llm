@@ -1,0 +1,50 @@
+[
+  {
+    "experiment": "starter",
+    "stage": "untrained",
+    "correct": 9,
+    "total": 48,
+    "scorable": 24,
+    "success_rate_all_cases": 0.1875,
+    "accuracy_scorable_cases": 0.375,
+    "coverage": 0.5,
+    "eval_prompt_unknown_rate": 0.3260340632603406,
+    "eval_choice_unknown_rate": 0.46875
+  },
+  {
+    "experiment": "starter",
+    "stage": "final",
+    "correct": 20,
+    "total": 48,
+    "scorable": 24,
+    "success_rate_all_cases": 0.4166666666666667,
+    "accuracy_scorable_cases": 0.8333333333333334,
+    "coverage": 0.5,
+    "eval_prompt_unknown_rate": 0.3260340632603406,
+    "eval_choice_unknown_rate": 0.46875
+  },
+  {
+    "experiment": "expanded",
+    "stage": "untrained",
+    "correct": 7,
+    "total": 48,
+    "scorable": 27,
+    "success_rate_all_cases": 0.14583333333333334,
+    "accuracy_scorable_cases": 0.25925925925925924,
+    "coverage": 0.5625,
+    "eval_prompt_unknown_rate": 0.145985401459854,
+    "eval_choice_unknown_rate": 0.3020833333333333
+  },
+  {
+    "experiment": "expanded",
+    "stage": "final",
+    "correct": 26,
+    "total": 48,
+    "scorable": 27,
+    "success_rate_all_cases": 0.5416666666666666,
+    "accuracy_scorable_cases": 0.9629629629629629,
+    "coverage": 0.5625,
+    "eval_prompt_unknown_rate": 0.145985401459854,
+    "eval_choice_unknown_rate": 0.3020833333333333
+  }
+]

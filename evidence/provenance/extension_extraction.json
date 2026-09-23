@@ -1,0 +1,26 @@
+{
+  "files": [
+    {
+      "file": "negation.txt",
+      "bytes": 7518,
+      "sha256": "8ae4970385624bc3b82d345dec2126b8c453597b0125f692c54befccdfea1030",
+      "warnings": [],
+      "characters": 7518,
+      "passages": 120,
+      "unique_passages": 120,
+      "preview": "The buyer did not order a bicycle because the old bicycle still worked.\nOur teacher did not cancel the lesson when the bus arrived late.\nThe nurse did not open the package until the doctor checked its label.\nA shopper did not buy juice because the bag was already full.\nThe bank did not approve the l"
+    },
+    {
+      "file": "opposites.txt",
+      "bytes": 7188,
+      "sha256": "ff213c5fa6641ef2f9706a5e3e0fb0fa20011c6a3976b6ee72f64ae87eead5f6",
+      "warnings": [],
+      "characters": 7188,
+      "passages": 120,
+      "unique_passages": 120,
+      "preview": "A large truck carries the fruit while a small bicycle carries one bag.\nThe buyer selected a small pear beside the large apple.\nOur new school has a large hall and a small office.\nA small order can fit inside the large package.\nThe teacher draws a large circle around a small mark.\nWe compared the sma"
+    }
+  ],
+  "ignored": [],
+  "external_passages": 240
+}

@@ -1,0 +1,35 @@
+{
+  "recorded_utc": "2026-09-22T23:52:23.212962+00:00",
+  "starter_url": "https://github.com/pepealonso95/custom-llm",
+  "starter_revision": "9e04ddb6aacb8efcb790e70c62550ca55e0f2a75",
+  "prediction": "Training loss should fall and samples should resemble the corpus more closely. Validation loss may improve. Added examples may improve vocabulary coverage and some scores, while failures remain.",
+  "training_started": false,
+  "settings": {
+    "main_steps": 3000,
+    "setup_steps": 10,
+    "learning_rate": 0.001,
+    "device": "cpu",
+    "seed": 42,
+    "categories": [
+      "opposites",
+      "negation"
+    ],
+    "original_passages_per_category": 120
+  },
+  "hardware": {
+    "cpu": "Apple M5",
+    "memory_bytes": 17179869184,
+    "logical_cpus": 10,
+    "architecture": "arm64"
+  },
+  "source_sha256": {
+    "nanogpt_model.py": "7c01703240dbec5d554527dc666e35b3df8391d0b117fddc07afcf325a21d11c",
+    "run_evals.py": "da87f28d128344807512e2bac1cfc662b37ac2c7e4a32b84c09f1950e92d67a0",
+    "chat.py": "6152c8b7780f3b46fef5de38461adfc4b1a55df70ed106ca73ec5e9aded86d25",
+    "evals/language_evals.json": "e8affcd72841e3ed7da5c0b6b116327fe9f69c9abd66a1180d1d88ceaa3e17f7",
+    "custom_llm.py": "4717e5433b853b2beb8a85b0c22915ca3b7a81ac7088e84fdd2b02d8cd1d884d",
+    "custom_llm.ipynb": "6ed0f3b45cce7d85cc951ea9bf48a33be01c834ad5dfadd8a15604b37b903683",
+    "requirements.txt": "a3448d3dc2d0611937d0540dd9ef10dea8152ab8147eb750ad5d652fa78d57fe",
+    "NANOGPT_LICENSE": "a59ec5cdb1c1e447e5266a014b3e7ded511f8d6e5a08931e931c87490ff821fe"
+  }
+}
